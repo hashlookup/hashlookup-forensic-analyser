@@ -92,6 +92,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]
 
 #print(notanalysed_files)
 
+#[print(f"{key}: {', '.join(di[key])}") for key in di.keys()]
 if args.print_all:
     for p in unknown_files:
         print(f'unknown,{p}')
