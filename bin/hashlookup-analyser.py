@@ -42,10 +42,12 @@ def lookup(value=None):
 known_files = []
 unknown_files = []
 notanalysed_files = []
-stats = {}
-stats['found'] = 0
-stats['unknown'] = 0
-stats['excluded'] = 0
+stats = {
+    'found' : 0,
+    'unknown' : 0,
+    'excluded' : 0
+}
+
 
 for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]:
     if args.verbose:
