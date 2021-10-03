@@ -96,11 +96,14 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]
 
 #print(notanalysed_files)
 if args.print_all:
-    [print(f"{key}: {', '.join(files[key])}") for key in files.keys()]
+    for key in files.keys():
+        for line in files[key]:
+            filetype = key.split("_")
+            print(f"{filetype[0]},{line}")
     
 elif args.print_unknown:
-    [print(f"unknown: {', '.join(files['unknown_files'])}")]
+    for line in files['unknown_files']:
+        print(f"unknown,{line}")
 
 if args.include_stats:
     print(f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}')
-#print(unknown_files)
