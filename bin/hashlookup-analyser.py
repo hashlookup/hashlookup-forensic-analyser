@@ -39,13 +39,19 @@ def lookup(value=None):
     r = requests.get('https://hashlookup.circl.lu/lookup/sha1/{}'.format(value), headers=headers)
     return r.json()
 
-known_files = []
-unknown_files = []
+
 notanalysed_files = []
-stats = {}
-stats['found'] = 0
-stats['unknown'] = 0
-stats['excluded'] = 0
+files = {
+    'known_files' : [],
+    'unknown_files' : []  
+}
+
+stats = {
+    'found' : 0,
+    'unknown' : 0,
+    'excluded' : 0
+}
+
 
 for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]:
     if args.verbose:
@@ -81,23 +87,19 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]
     hresult = lookup(value = h)
     if 'SHA-1' not in hresult:
         stats['unknown'] += 1
-        unknown_files.append(fn)
+        files['unknown_files'].append(fn)
     else:
         stats['found'] += 1
-        known_files.append(fn)
+        files['known_files'].append(fn)
         if args.verbose:
             print(hresult)
 
 #print(notanalysed_files)
-
 if args.print_all:
-    for p in unknown_files:
-        print(f'unknown,{p}')
-    for p in known_files:
-        print(f'known,{p}')
+    [print(f"{key}: {', '.join(files[key])}") for key in files.keys()]
+    
 elif args.print_unknown:
-    for p in unknown_files:
-        print(f'unknown,{p}')
+    [print(f"unknown: {', '.join(files['unknown_files'])}")]
 
 if args.include_stats:
     print(f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}')
