@@ -25,7 +25,7 @@ parser.add_argument("-d", "--dir", help="Directory to analyse")
 parser.add_argument("--print-all", action="store_true", help="Print all files result including known and unknown")
 parser.add_argument("--print-unknown", action="store_true", help="Print all files unknown to hashlookup service")
 parser.add_argument("--include-stats", action="store_true", help="Include statistics in the CSV export")
-
+parser.add_argument("--format", help="Output format (default is CSV)", default="csv")
 args = parser.parse_args()
 
 if not args.dir:
@@ -95,15 +95,16 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0],  '*'))]
             print(hresult)
 
 #print(notanalysed_files)
-if args.print_all:
-    for key in files.keys():
-        for line in files[key]:
-            filetype = key.split("_")
-            print(f"{filetype[0]},{line}")
-    
-elif args.print_unknown:
-    for line in files['unknown_files']:
-        print(f"unknown,{line}")
+if args.format == "csv":
+    if args.print_all:
+        for key in files.keys():
+            for line in files[key]:
+                filetype = key.split("_")
+                print(f"{filetype[0]},{line}")
 
-if args.include_stats:
-    print(f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}')
+    elif args.print_unknown:
+        for line in files['unknown_files']:
+            print(f"unknown,{line}")
+
+    if args.include_stats:
+        print(f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}')
