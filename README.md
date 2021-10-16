@@ -6,7 +6,7 @@ This tool can help a digital forensic investigator to know the context, origin o
 # Usage
 
 ~~~~
-usage: hashlookup-analyser.py [-h] [-v] [-d DIR] [--print-all] [--print-unknown] [--include-stats]
+usage: hashlookup-analyser.py [-h] [-v] [-d DIR] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT]
 
 Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service
 
@@ -17,6 +17,7 @@ optional arguments:
   --print-all        Print all files result including known and unknown
   --print-unknown    Print all files unknown to hashlookup service
   --include-stats    Include statistics in the CSV export
+  --format FORMAT    Output format (default is CSV)
 ~~~~
 
 ## Example
