@@ -36,7 +36,7 @@ if not args.dir:
 def lookup(value=None):
     if value is None:
         return False
-    r = requests.get('https://hashlookup.circl.lu/lookup/sha1/{}'.format(value), headers=headers)
+    r = requests.get(f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers)
     return r.json()
 
 
