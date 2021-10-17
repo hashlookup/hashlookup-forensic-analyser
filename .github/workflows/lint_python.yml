@@ -1,0 +1,25 @@
+name: lint_python
+on: [pull_request, push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+
+      - name: Install dependencies
+        run:  |
+          sudo apt-get install libpq-dev
+          python -m pip install --upgrade pip wheel
+          python -m pip install bandit black flake8 flake8-bugbear flake8-comprehensions isort mypy pyupgrade safety
+                         
+      - run: bandit --recursive  --skip B106,B110,B404,B602,B603,B607,B303 .
+      - run: black -S --target-version py38 --check .
+      - run: flake8 . --count --ignore=B,E203,E722,W503,W605 --max-complexity=28 --max-line-length=220 --show-source --statistics
+      - run: isort --check-only --profile black .
+      - run: |
+          pip install -r REQUIREMENTS
+          mkdir --parents --verbose .mypy_cache
+      - run: mypy --allow-redefinition --ignore-missing-imports --install-types --non-interactive .
+      - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
+      - run: safety check
