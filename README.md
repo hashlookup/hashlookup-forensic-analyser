@@ -1,5 +1,7 @@
 # hashlookup-forensic-analyser
 
+[![lint_python](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml/badge.svg)](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml)
+
 Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/).
 This tool can help a digital forensic investigator to know the context, origin of specific files during a digital forensic investigation.
 
