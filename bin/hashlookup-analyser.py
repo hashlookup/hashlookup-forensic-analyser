@@ -120,14 +120,14 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         stats['unknown'] += 1
         files['unknown_files'].append(fn)
         if args.cache:
-            with open(f'{CACHE_DIR}/unknown/{h}', 'w') as f:
-                f.write("Unknown")
+            with open(f'{CACHE_DIR}/unknown/{h}', 'wb') as f:
+                f.write(b"Unknown")
     else:
         stats['found'] += 1
         files['known_files'].append(fn)
         if args.cache:
-            with open(f'{CACHE_DIR}/known/{h}', 'w') as f:
-                f.write(json.dumps(hresult))
+            with open(f'{CACHE_DIR}/known/{h}', 'wb') as f:
+                f.write(json.dumps(hresult).encode())
 
         if args.verbose:
             print(hresult)
