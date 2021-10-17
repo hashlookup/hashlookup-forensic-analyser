@@ -12,7 +12,7 @@ import pytz
 import requests
 
 BUF_SIZE = 65536
-VERSION = "0.1"
+VERSION = "0.2"
 NAME = "hashlookup-forensic-analyser"
 
 headers = {'User-Agent': f'{NAME}/{VERSION}'}
