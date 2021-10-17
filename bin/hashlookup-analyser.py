@@ -56,8 +56,6 @@ def lookup(value=None):
 
 
 notanalysed_files = []
-
-# the files which searched their hash
 files = {"known_files": [], "unknown_files": []}
 
 stats = {"found": 0, "unknown": 0, "excluded": 0}
@@ -123,5 +121,5 @@ if args.format == "csv":
 
     if args.include_stats:
         print(
-            f'stats,Analysed directory {args.dir} on {hostname} running {} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
+            f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
         )
