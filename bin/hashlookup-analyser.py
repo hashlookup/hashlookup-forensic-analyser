@@ -118,13 +118,13 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         hresult = lookup(value=h)
     if 'SHA-1' not in hresult:
         stats['unknown'] += 1
-        files['unknown_files'].append(fn)
+        files['unknown_files'].append(f'{fn},{h}')
         if args.cache:
             with open(f'{CACHE_DIR}/unknown/{h}', 'wb') as f:
                 f.write(b"Unknown")
     else:
         stats['found'] += 1
-        files['known_files'].append(fn)
+        files['known_files'].append(f'{fn},{h}')
         if args.cache:
             with open(f'{CACHE_DIR}/known/{h}', 'wb') as f:
                 f.write(json.dumps(hresult).encode())
@@ -134,17 +134,19 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
 
 # print(notanalysed_files)
 if args.format == "csv":
-    print('hashlookup_result,filename,size')
+    print('hashlookup_result,filename,sha-1,size')
     if args.print_all:
         for key in files.keys():
             for line in files[key]:
-                fsize = os.path.getsize(line)
+                name = line.split(',')
+                fsize = os.path.getsize(name[0])
                 filetype = key.split("_")
                 print(f"{filetype[0]},{line},{fsize}")
 
     elif args.print_unknown:
         for line in files['unknown_files']:
-            fsize = os.path.getsize(line)
+            name = line.split(',')
+            fsize = os.path.getsize(name[0])
             print(f"unknown,{line},{fsize}")
 
     if args.include_stats:
