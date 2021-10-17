@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 import argparse
+import datetime
+import hashlib
+import os
+import platform
+import stat
 import sys
 from glob import glob
-import os
-import hashlib
-import requests
-import stat
-import platform
-import datetime
+
 import pytz
+import requests
 
 BUF_SIZE = 65536
 VERSION = "0.1"
