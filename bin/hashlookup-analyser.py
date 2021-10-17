@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import hashlib
+import json
 import os
 import platform as pl
 import stat
@@ -12,9 +13,10 @@ import pytz
 import requests
 
 BUF_SIZE = 65536
-VERSION = "0.2"
+VERSION = "0.3"
 NAME = "hashlookup-forensic-analyser"
-
+# cache directory name needs to be known between execution of the script
+CACHE_DIR = "/tmp/hashlookup-forensic-analyser"  # nosec
 headers = {'User-Agent': f'{NAME}/{VERSION}'}
 hostname = pl.node()
 platform = pl.platform()
@@ -39,11 +41,21 @@ parser.add_argument(
     "--include-stats", action="store_true", help="Include statistics in the CSV export"
 )
 parser.add_argument("--format", help="Output format (default is CSV)", default="csv")
+parser.add_argument(
+    "--cache",
+    action="store_true",
+    help=f'Enable local cache of known and unknown hashes in {CACHE_DIR}',
+    default=False,
+)
 args = parser.parse_args()
 
 if not args.dir:
     parser.print_help()
     sys.exit(1)
+
+if args.cache:
+    os.makedirs(f'{CACHE_DIR}/known/', exist_ok=True)
+    os.makedirs(f'{CACHE_DIR}/unknown/', exist_ok=True)
 
 
 def lookup(value=None):
@@ -64,7 +76,7 @@ stats = {'found': 0, 'unknown': 0, 'excluded': 0}
 for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     if args.verbose:
         sys.stderr.write(
-            f'\rAnalysing {fn} - Found {stats["found"]} - Unknown {stats["unknown"]}'
+            f'\rAnalysing {fn} - Found {stats["found"]} - Unknown {stats["unknown"]}\n'
         )
         sys.stderr.flush()
     if not os.path.exists(fn):
@@ -94,13 +106,29 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
                 break
             sha1.update(data)
     h = sha1.hexdigest().upper()
-    hresult = lookup(value=h)
+
+    knowncachefile = f'{CACHE_DIR}/known/{h}'
+    cachefile = f'{CACHE_DIR}/unknown/{h}'
+    if args.cache and os.path.isfile(cachefile):
+        hresult = {}
+    elif args.cache and os.path.isfile(knowncachefile):
+        with open(knowncachefile) as f:
+            hresult = json.load(f)
+    else:
+        hresult = lookup(value=h)
     if 'SHA-1' not in hresult:
         stats['unknown'] += 1
         files['unknown_files'].append(fn)
+        if args.cache:
+            with open(f'{CACHE_DIR}/unknown/{h}', 'w') as f:
+                f.write("Unknown")
     else:
         stats['found'] += 1
         files['known_files'].append(fn)
+        if args.cache:
+            with open(f'{CACHE_DIR}/known/{h}', 'w') as f:
+                f.write(json.dumps(hresult))
+
         if args.verbose:
             print(hresult)
 
