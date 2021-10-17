@@ -56,7 +56,7 @@ def lookup(value=None):
 
 
 notanalysed_files = []
-files = {'known_files': [], 'unknown_files': []} # type: ignore
+files = {'known_files': [], 'unknown_files': []}  # type: ignore
 
 stats = {'found': 0, 'unknown': 0, 'excluded': 0}
 
