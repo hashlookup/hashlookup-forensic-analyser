@@ -13,15 +13,13 @@ jobs:
           python -m pip install --upgrade pip wheel
           python -m pip install bandit black flake8 flake8-bugbear flake8-comprehensions isort mypy pyupgrade safety
                          
-      - name: Analysing the code
-        run: |
-          bandit --recursive  --skip B106,B110,B404,B602,B603,B607,B303 .
-          black --check .
-          flake8 . --count --ignore=B,E203,E722,W503,W605 --max-complexity=28
-                      --max-line-length=220 --show-source --statistics
-          isort --check-only --profile black .
+      - run: bandit --recursive  --skip B106,B110,B404,B602,B603,B607,B303 .
+      - run: black --check .
+      - run: flake8 . --count --ignore=B,E203,E722,W503,W605 --max-complexity=28 --max-line-length=220 --show-source --statistics
+      - run: isort --check-only --profile black .
+      - run: |
           pip install -r REQUIREMENTS
           mkdir --parents --verbose .mypy_cache
-          mypy --ignore-missing-imports --install-types --non-interactive .
-          shopt -s globstar && pyupgrade --py36-plus **/*.py || true
-          safety check
+      - run: mypy --ignore-missing-imports --install-types --non-interactive .
+      - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
+      - run: safety check
