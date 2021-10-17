@@ -11,8 +11,7 @@ jobs:
         run:  |
           sudo apt-get install libpq-dev
           python -m pip install --upgrade pip wheel
-          python -m pip install bandit black flake8 flake8-bugbear
-                         flake8-comprehensions isort mypy pyupgrade safety
+          python -m pip install bandit black flake8 flake8-bugbear flake8-comprehensions isort mypy pyupgrade safety
                          
       - name: Analysing the code
         run: |
