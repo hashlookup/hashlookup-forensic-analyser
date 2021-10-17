@@ -10,9 +10,7 @@ jobs:
       - name: Install dependencies
         run:  |
           sudo apt-get install libpq-dev
-        run: |
           python -m pip install --upgrade pip wheel
-        run: |
           python -m pip install bandit black flake8 flake8-bugbear
                          flake8-comprehensions isort mypy pyupgrade safety
                          
