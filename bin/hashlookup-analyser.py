@@ -3,7 +3,7 @@ import argparse
 import datetime
 import hashlib
 import os
-import platform
+import platform as pl
 import stat
 import sys
 from glob import glob
@@ -17,7 +17,7 @@ NAME = "hashlookup-forensic-analyser"
 
 headers = {"User-Agent": f"{NAME}/{VERSION}"}
 hostname = platform.node()
-platform = platform.platform()
+platform = pl.platform()
 when = datetime.datetime.now(pytz.utc)
 
 parser = argparse.ArgumentParser(
@@ -123,5 +123,5 @@ if args.format == "csv":
 
     if args.include_stats:
         print(
-            f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
+            f'stats,Analysed directory {args.dir} on {hostname} running {} at {when}- Found {stats["found"]} on hashlookup.circl.lu - Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
         )
