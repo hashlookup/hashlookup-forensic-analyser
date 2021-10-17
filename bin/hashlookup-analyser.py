@@ -6,7 +6,7 @@ import os
 import hashlib
 import requests
 import stat
-import platform
+import platform as pl
 import datetime
 import pytz
 
@@ -15,8 +15,8 @@ VERSION = "0.1"
 NAME = "hashlookup-forensic-analyser"
 
 headers = {'User-Agent': f'{NAME}/{VERSION}'}
-hostname = platform.node()
-platform = platform.platform()
+hostname = pl.node()
+platform = pl.platform()
 when = datetime.datetime.now(pytz.utc)
 
 parser = argparse.ArgumentParser(description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service")
