@@ -112,7 +112,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     if args.cache and os.path.isfile(cachefile):
         hresult = {}
     elif args.cache and os.path.isfile(knowncachefile):
-        with open(knowncachefile) as f:
+        with open(knowncachefile, 'rb') as f:
             hresult = json.load(f)
     else:
         hresult = lookup(value=h)
