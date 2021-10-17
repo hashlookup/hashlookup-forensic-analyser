@@ -16,7 +16,7 @@ VERSION = "0.1"
 NAME = "hashlookup-forensic-analyser"
 
 headers = {"User-Agent": f"{NAME}/{VERSION}"}
-hostname = platform.node()
+hostname = pl.node()
 platform = pl.platform()
 when = datetime.datetime.now(pytz.utc)
 
