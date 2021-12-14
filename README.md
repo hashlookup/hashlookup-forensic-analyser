@@ -70,6 +70,15 @@ unknown,/usr/local/bin/__pycache__/pdf2txt.cpython-38.pyc,0C22717A2D2C6676005B99
 unknown,/usr/local/bin/__pycache__/wsdump.cpython-38.pyc,ADD28D31B88E5995A0725A424B415C350726CFD5,6449
 stats,Analysed directory /usr/local/bin/ on kolmogorov running Linux-5.10.0-1045-oem-x86_64-with-glibc2.29 at 2021-10-17 15:50:07.299694+00:00- Found 6 on hashlookup.circl.lu - Unknown files 34 - Excluded files 0
 ~~~~
+## Bloom filter
+
+If you don't want to share your lookups online and do faster lookup, hashlookup provides a [bloom filter to download](https://cra.circl.lu/hashlookup/hashlookup-full.bloom](https://cra.circl.lu/hashlookup/hashlookup-full.bloom).
+
+The file is around 700MB and can be stored locally in your home directory. `hashlookup-analyser` works in the same way, `--bloomfilter` option allows to specify the filename locatoon of the bloom filter.
+
+~~~~
+python3 bin/hashlookup-analyser.py --bloomfilter /home/adulau/hashlookup/hashlookup-full.bloom --include-stats -d /bin
+~~~~
 
 # License
 
