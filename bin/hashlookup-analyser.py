@@ -47,11 +47,16 @@ parser.add_argument(
     help=f'Enable local cache of known and unknown hashes in {CACHE_DIR}',
     default=False,
 )
-parser.add_argument("--bloomfilter", help="Specify filename of a bloomfilter in DCSO bloomfilter format", default=None)
+parser.add_argument(
+    "--bloomfilter",
+    help="Specify filename of a bloomfilter in DCSO bloomfilter format",
+    default=None,
+)
 args = parser.parse_args()
 
 if args.bloomfilter is not None:
     from flor import BloomFilter
+
     bf = BloomFilter()
     with open(args.bloomfilter, 'rb') as f:
         bf.read(f)
@@ -79,7 +84,9 @@ def lookup(value=None):
         else:
             return False
 
-    r = requests.get( f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers)
+    r = requests.get(
+        f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers
+    )
     return r.json()
 
 
