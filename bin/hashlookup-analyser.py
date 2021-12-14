@@ -132,7 +132,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
             hresult = json.load(f)
     else:
         hresult = lookup(value=h)
-    if 'SHA-1' not in hresult:
+    if hresult is False or 'SHA-1' not in hresult:
         stats['unknown'] += 1
         files['unknown_files'].append(f'{fn},{h}')
         if args.cache:
