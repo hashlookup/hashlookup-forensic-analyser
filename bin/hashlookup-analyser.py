@@ -47,7 +47,7 @@ parser.add_argument(
     help=f'Enable local cache of known and unknown hashes in {CACHE_DIR}',
     default=False,
 )
-parser.add_argument("--bloomfilter", help="Specify filename of a bloomfilter in DCSO bloomfilter format (gzip)", default=None)
+parser.add_argument("--bloomfilter", help="Specify filename of a bloomfilter in DCSO bloomfilter format", default=None)
 args = parser.parse_args()
 
 if args.bloomfilter is not None:

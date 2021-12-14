@@ -2,25 +2,27 @@
 
 [![lint_python](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml/badge.svg)](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml)
 
-Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/).
+Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/) or the bloom filter from CIRCL hashlookup.
 This tool can help a [digital forensic investigator](https://gist.github.com/adulau/e9e95fead4f32ac0fe725cb2a32fdb51) to know the context, origin of specific files during a digital forensic investigation.
 
 # Usage
 
 ~~~~
-usage: hashlookup-analyser.py [-h] [-v] [-d DIR] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache]
+usage: hashlookup-analyser.py [-h] [-v] [-d DIR] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache] [--bloomfilter BLOOMFILTER]
 
 Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -v, --verbose      Verbose output
-  -d DIR, --dir DIR  Directory to analyse
-  --print-all        Print all files result including known and unknown
-  --print-unknown    Print all files unknown to hashlookup service
-  --include-stats    Include statistics in the CSV export
-  --format FORMAT    Output format (default is CSV)
-  --cache            Enable local cache of known and unknown hashes in /tmp/hashlookup-forensic-analyser
+  -h, --help            show this help message and exit
+  -v, --verbose         Verbose output
+  -d DIR, --dir DIR     Directory to analyse
+  --print-all           Print all files result including known and unknown
+  --print-unknown       Print all files unknown to hashlookup service
+  --include-stats       Include statistics in the CSV export
+  --format FORMAT       Output format (default is CSV)
+  --cache               Enable local cache of known and unknown hashes in /tmp/hashlookup-forensic-analyser
+  --bloomfilter BLOOMFILTER
+                        Specify filename of a bloomfilter in DCSO bloomfilter format
 ~~~~
 
 ## Example
