@@ -26,6 +26,7 @@ parser = argparse.ArgumentParser(
     description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service"
 )
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
+parser.add_argument("--extended-debug", action="store_true", default=False)
 parser.add_argument("-d", "--dir", help="Directory to analyse")
 parser.add_argument(
     "--print-all",
@@ -109,6 +110,8 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     else:
         fn_info = os.stat(fn)
     mode = fn_info.st_mode
+    if args.extended_debug:
+        print(f'file={fn}, mode={mode}, finfo={fn_info}')
     if stat.S_ISDIR(mode):
         notanalysed_files.append(f'{fn},dir')
         continue
