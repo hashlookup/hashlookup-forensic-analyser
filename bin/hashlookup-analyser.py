@@ -8,6 +8,7 @@ import platform as pl
 import stat
 import sys
 from glob import glob
+import itertools
 
 import pytz
 import requests
@@ -21,12 +22,14 @@ headers = {'User-Agent': f'{NAME}/{VERSION}'}
 hostname = pl.node()
 platform = pl.platform()
 when = datetime.datetime.now(pytz.utc)
+spinner = itertools.cycle(['◰', '◳', '◲', '◱'])
 
 parser = argparse.ArgumentParser(
-    description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service"
+    description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service."
 )
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
-parser.add_argument("--extended-debug", action="store_true", default=False)
+parser.add_argument("--extended-debug", action="store_true", default=False, help="Debug file processed along with the mode and type.")
+parser.add_argument("--progress", action="store_true", default=False, help="Pring progress of the file lookup on stderr.")
 parser.add_argument("-d", "--dir", help="Directory to analyse")
 parser.add_argument(
     "--print-all",
@@ -94,8 +97,10 @@ def lookup(value=None):
 notanalysed_files = []
 files = {'known_files': [], 'unknown_files': []}  # type: ignore
 
-stats = {'found': 0, 'unknown': 0, 'excluded': 0}
+stats = {'found': 0, 'unknown': 0, 'excluded': 0, 'analysed': 0}
 
+if args.progress:
+    progress = 0
 
 for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     if args.verbose:
@@ -112,6 +117,9 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     mode = fn_info.st_mode
     if args.extended_debug:
         print(f'file={fn}, mode={mode}, finfo={fn_info}')
+    if args.progress:
+        sys.stdout.write(next(spinner))
+        sys.stdout.write(f'  - Files analysed={stats["analysed"]}, excluded={stats["excluded"]}, unknown={stats["unknown"]}, found={stats["found"]}\r')
     if stat.S_ISDIR(mode):
         notanalysed_files.append(f'{fn},dir')
         continue
@@ -158,9 +166,9 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         if args.cache:
             with open(f'{CACHE_DIR}/known/{h}', 'wb') as f:
                 f.write(json.dumps(hresult).encode())
-
-        if args.verbose:
-            print(hresult)
+    stats['analysed'] += 1
+    if args.verbose:
+        print(hresult)
 
 # print(notanalysed_files)
 if args.format == "csv":
@@ -185,5 +193,5 @@ if args.format == "csv":
         else:
             bloomfilter_source = "None - live request"
         print(
-            f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when}- Found {stats["found"]} on hashlookup.circl.lu ({bloomfilter_source})- Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
+            f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when} on a total files of {stats["analysed"]} - Found {stats["found"]} on hashlookup.circl.lu ({bloomfilter_source})- Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
         )
