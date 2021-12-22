@@ -28,8 +28,18 @@ parser = argparse.ArgumentParser(
     description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service."
 )
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
-parser.add_argument("--extended-debug", action="store_true", default=False, help="Debug file processed along with the mode and type.")
-parser.add_argument("--progress", action="store_true", default=False, help="Pring progress of the file lookup on stderr.")
+parser.add_argument(
+    "--extended-debug",
+    action="store_true",
+    default=False,
+    help="Debug file processed along with the mode and type.",
+)
+parser.add_argument(
+    "--progress",
+    action="store_true",
+    default=False,
+    help="Pring progress of the file lookup on stderr.",
+)
 parser.add_argument("-d", "--dir", help="Directory to analyse")
 parser.add_argument(
     "--print-all",
@@ -119,7 +129,9 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         print(f'file={fn}, mode={mode}, finfo={fn_info}')
     if args.progress:
         sys.stdout.write(next(spinner))
-        sys.stdout.write(f'  - Files analysed={stats["analysed"]}, excluded={stats["excluded"]}, unknown={stats["unknown"]}, found={stats["found"]}\r')
+        sys.stdout.write(
+            f'  - Files analysed={stats["analysed"]}, excluded={stats["excluded"]}, unknown={stats["unknown"]}, found={stats["found"]}\r'
+        )
     if stat.S_ISDIR(mode):
         notanalysed_files.append(f'{fn},dir')
         continue
