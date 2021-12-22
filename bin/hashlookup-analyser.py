@@ -119,6 +119,10 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         notanalysed_files.append(f'{fn},socket')
         stats['excluded'] += 1
         continue
+    elif stat.S_ISFIFO(mode):
+        notanalysed_files.append(f'{fn},fifo')
+        stats['excluded'] += 1
+        continue
     elif not os.path.exists(fn):
         notanalysed_files.append(f'{fn},listed-but-no-existing')
         stats['excluded'] += 1
