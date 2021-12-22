@@ -2,16 +2,15 @@
 import argparse
 import datetime
 import hashlib
+import itertools
 import json
 import os
 import platform as pl
 import stat
 import sys
 from glob import glob
-import itertools
 
 import pytz
-import requests
 
 BUF_SIZE = 65536
 VERSION = "0.3"
