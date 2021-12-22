@@ -6,12 +6,12 @@ import itertools
 import json
 import os
 import platform as pl
-import requests
 import stat
 import sys
 from glob import glob
 
 import pytz
+import requets
 
 BUF_SIZE = 65536
 VERSION = "0.3"
@@ -143,13 +143,36 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         notanalysed_files.append(f'{fn},fifo')
         stats['excluded'] += 1
         continue
+    elif stat.S_ISBLK(mode):
+        notanalysed_files.append(f'{fn},blockdevice')
+        stats['excluded'] += 1
+        continue
+    elif stat.S_ISCHR(mode):
+        notanalysed_files.append(f'{fn},chardevice')
+        stats['excluded'] += 1
+        continue
+    elif stat.S_ISDOOR(mode):
+        notanalysed_files.append(f'{fn},dooripc')
+        stats['excluded'] += 1
+        continue
     elif not os.path.exists(fn):
         notanalysed_files.append(f'{fn},listed-but-no-existing')
         stats['excluded'] += 1
         continue
+    elif stat.S_ISREG(mode):
+        pass
+    else:
+        notanalysed_files.append(f'{fn},not regular/unknown')
+        stats['excluded'] += 1
+        continue
+
     sha1 = hashlib.sha1()
     with open(fn, 'rb') as f:
-        size = os.fstat(f.fileno()).st_size
+        try:
+            size = os.fstat(f.fileno()).st_size
+        except:
+            size = 0
+            pass
         while True:
             data = f.read(BUF_SIZE)
             if not data:
