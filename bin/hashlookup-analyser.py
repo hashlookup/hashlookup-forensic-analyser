@@ -11,7 +11,7 @@ import sys
 from glob import glob
 
 import pytz
-import requets
+import requests
 
 BUF_SIZE = 65536
 VERSION = "0.3"
