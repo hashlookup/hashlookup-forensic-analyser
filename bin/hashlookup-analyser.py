@@ -6,6 +6,7 @@ import itertools
 import json
 import os
 import platform as pl
+import requests
 import stat
 import sys
 from glob import glob
