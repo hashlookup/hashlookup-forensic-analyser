@@ -218,7 +218,9 @@ if args.format == "csv":
             for file_object in files[key]:
                 fsize = os.path.getsize(file_object['FileName'])
                 filetype = key.split("_")
-                print(f"{filetype[0]},\"{file_object['FileName']}\",{file_object['hash']},{fsize}")
+                print(
+                    f"{filetype[0]},\"{file_object['FileName']}\",{file_object['hash']},{fsize}"
+                )
 
     elif args.print_unknown:
         for file_object in files['unknown_files']:
