@@ -167,18 +167,24 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         continue
 
     sha1 = hashlib.sha1()
-    with open(fn, 'rb') as f:
-        try:
-            size = os.fstat(f.fileno()).st_size
-        except:
-            size = 0
-            pass
-        while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-                break
-            sha1.update(data)
-    h = sha1.hexdigest().upper()
+    try:
+        with open(fn, 'rb') as f:
+            try:
+                size = os.fstat(f.fileno()).st_size
+            except:
+                size = 0
+                pass
+            while True:
+                data = f.read(BUF_SIZE)
+                if not data:
+                    break
+                sha1.update(data)
+        h = sha1.hexdigest().upper()
+    except Exception as e:
+        sys.stderr.write(f'Unable to read {e} file {fn}\n')
+        notanalysed_files.append(f'{fn},{e}')
+        stats['excluded'] += 1
+        pass
 
     knowncachefile = f'{CACHE_DIR}/known/{h}'
     cachefile = f'{CACHE_DIR}/unknown/{h}'
