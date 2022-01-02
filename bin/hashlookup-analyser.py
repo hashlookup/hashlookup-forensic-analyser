@@ -8,13 +8,14 @@ import os
 import platform as pl
 import stat
 import sys
+import tempfile
 from glob import glob
 
 import pytz
 import requests
 
 BUF_SIZE = 65536
-VERSION = "0.7"
+VERSION = "0.8"
 NAME = "hashlookup-forensic-analyser"
 # cache directory name needs to be known between execution of the script
 CACHE_DIR = "/tmp/hashlookup-forensic-analyser"  # nosec
@@ -27,7 +28,7 @@ spinner = itertools.cycle(['◰', '◳', '◲', '◱'])
 parser = argparse.ArgumentParser(
     description="Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service."
 )
-parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
+parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output.")
 parser.add_argument(
     "--extended-debug",
     action="store_true",
@@ -40,30 +41,36 @@ parser.add_argument(
     default=True,
     help="Pring progress of the file lookup on stderr.",
 )
-parser.add_argument("-d", "--dir", help="Directory to analyse")
+parser.add_argument("-d", "--dir", help="Directory to analyse.")
+parser.add_argument(
+    "--report",
+    action="store_true",
+    help="Generate a report directory including a summary and all the results.",
+    default=False,
+)
 parser.add_argument(
     "--print-all",
     action="store_true",
-    help="Print all files result including known and unknown",
+    help="Print all files result including known and unknown.",
 )
 parser.add_argument(
     "--print-unknown",
     action="store_true",
-    help="Print all files unknown to hashlookup service",
+    help="Print all files unknown to hashlookup service.",
 )
 parser.add_argument(
-    "--include-stats", action="store_true", help="Include statistics in the CSV export"
+    "--include-stats", action="store_true", help="Include statistics in the CSV export."
 )
-parser.add_argument("--format", help="Output format (default is CSV)", default="csv")
+parser.add_argument("--format", help="Output format (default is CSV).", default="csv")
 parser.add_argument(
     "--cache",
     action="store_true",
-    help=f'Enable local cache of known and unknown hashes in {CACHE_DIR}',
+    help=f'Enable local cache of known and unknown hashes in {CACHE_DIR}.',
     default=False,
 )
 parser.add_argument(
     "--bloomfilter",
-    help="Specify filename of a bloomfilter in DCSO bloomfilter format",
+    help="Specify filename of a bloomfilter in DCSO bloomfilter format.",
     default=None,
 )
 args = parser.parse_args()
@@ -102,6 +109,63 @@ def lookup(value=None):
         f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers
     )
     return r.json()
+
+
+def generate_report():
+    datefile = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    dirname = f"report-hashlookup-{datefile}"
+    os.mkdir(dirname)
+    markdown = "\n"
+    total = stats["analysed"] + stats["excluded"]
+    markdown += "![Hashlookup logo](https://avatars.githubusercontent.com/u/91272032?s=200&v=4)\n"
+    markdown += "# Overall statistics\n\n"
+    markdown += (
+        f"Analysed directory {args.dir} on {hostname} running {platform} at {when}.\n\n"
+    )
+    markdown += f"Run with [hashlookup-forensic-analysed](https://github.com/hashlookup/hashlookup-forensic-analyser) version {VERSION}.\n\n"
+    markdown += "|Hashlookup type|Numbers|\n"
+    markdown += "|:-------------:|:-----:|\n"
+    for stat in stats.keys():
+        markdown += f'|{stat}|{stats[stat]}|\n'
+    markdown += "\n"
+    markdown += " - *found* : File found and known in the [hashlookup database](https://circl.lu/services/hashlookup/).\n"
+    markdown += " - *unknown* : File not found in the [hashlookup database](https://circl.lu/services/hashlookup/).\n"
+    markdown += " - *excluded* : File excluded from the analysis such as special files or files inaccessible.\n"
+    markdown += (
+        " - *analysed* : Total file analysed (hashed) without the excluded ones.\n"
+    )
+    markdown += "\n"
+    markdown += "```mermaid\n"
+    markdown += (
+        f'pie title File statistics by hashlookup-analyser of {total} files found\n'
+    )
+    for stat in stats.keys():
+        if stat == "analysed":
+            continue
+        markdown += f'    \"{stat} ({stats[stat]})\" : {stats[stat]}\n'
+    markdown += "```\n\n"
+    markdown += "# Detailed review\n"
+    markdown += "Files analysed can be found below sorted by unknown and known files. The result is also available in a [JSON file](full.json).\n"
+    markdown += "## Unknown files\n\n"
+    markdown += "Files which might require further investigation and analysis are listed below.\n\n"
+    markdown += "|Filename|SHA-1 value|\n"
+    markdown += "|:-------|:----------|\n"
+    for unknown in files['unknown_files']:
+        markdown += f'|{unknown["FileName"]}|{unknown["hash"]}|\n'
+    markdown += "\n## Unknown files\n\n"
+    markdown += "Files found in hashlookup which might require less investigation and analysis are listed below.\n\n"
+    markdown += "|Filename|SHA-1 value|\n"
+    markdown += "|:-------|:----------|\n"
+    for known in files['known_files']:
+        markdown += f'|{known["FileName"]}|[{known["hash"]}](https://hashlookup.circl.lu/lookup/sha1/{known["hash"]})|\n'
+
+    f = open(os.path.join(dirname, "summary.md"), "w")
+    f.write(markdown)
+    f.close()
+    f = open(os.path.join(dirname, "full.json"), "w")
+    f.write(json.dumps(files))
+    f.close()
+    return True
 
 
 notanalysed_files = []
@@ -241,3 +305,6 @@ if args.format == "csv":
         print(
             f'stats,Analysed directory {args.dir} on {hostname} running {platform} at {when} on a total files of {stats["analysed"]} - Found {stats["found"]} on hashlookup.circl.lu ({bloomfilter_source})- Unknown files {stats["unknown"]} - Excluded files {stats["excluded"]}'
         )
+
+if args.report:
+    generate_report()
