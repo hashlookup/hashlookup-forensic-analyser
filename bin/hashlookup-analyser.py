@@ -8,7 +8,6 @@ import os
 import platform as pl
 import stat
 import sys
-import tempfile
 from glob import glob
 
 import pytz
@@ -125,8 +124,8 @@ def generate_report():
     markdown += f"Run with [hashlookup-forensic-analysed](https://github.com/hashlookup/hashlookup-forensic-analyser) version {VERSION}.\n\n"
     markdown += "|Hashlookup type|Numbers|\n"
     markdown += "|:-------------:|:-----:|\n"
-    for stat in stats.keys():
-        markdown += f'|{stat}|{stats[stat]}|\n'
+    for stati in stats.keys():
+        markdown += f'|{stati}|{stats[stati]}|\n'
     markdown += "\n"
     markdown += " - *found* : File found and known in the [hashlookup database](https://circl.lu/services/hashlookup/).\n"
     markdown += " - *unknown* : File not found in the [hashlookup database](https://circl.lu/services/hashlookup/).\n"
