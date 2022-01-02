@@ -151,7 +151,7 @@ def generate_report():
     markdown += "|:-------|:----------|\n"
     for unknown in files['unknown_files']:
         markdown += f'|{unknown["FileName"]}|{unknown["hash"]}|\n'
-    markdown += "\n## Unknown files\n\n"
+    markdown += "\n## Known files\n\n"
     markdown += "Files found in hashlookup which might require less investigation and analysis are listed below.\n\n"
     markdown += "|Filename|SHA-1 value|\n"
     markdown += "|:-------|:----------|\n"

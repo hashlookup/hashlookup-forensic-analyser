@@ -2,7 +2,7 @@
 ![Hashlookup logo](https://avatars.githubusercontent.com/u/91272032?s=200&v=4)
 # Overall statistics
 
-Analysed directory /usr/lib/modules/5.11.0-41-generic/ on maurer running Linux-5.11.0-43-generic-x86_64-with-glibc2.29 at 2022-01-02 11:06:07.978494+00:00.
+Analysed directory /usr/lib/modules/5.11.0-41-generic/ on maurer running Linux-5.11.0-43-generic-x86_64-with-glibc2.29 at 2022-01-02 11:20:10.596458+00:00.
 
 Run with [hashlookup-forensic-analysed](https://github.com/hashlookup/hashlookup-forensic-analyser) version 0.8.
 
@@ -49,7 +49,7 @@ Files which might require further investigation and analysis are listed below.
 |/usr/lib/modules/5.11.0-41-generic/updates/dkms/evdi.ko|0DF531EE08404DF4A8683EBE4F8E929F15F6D970|
 |/usr/lib/modules/5.11.0-41-generic/updates/dkms/vboxdrv.ko|A88622EED83DC66441CF557C68E53432BED4424B|
 
-## Unknown files
+## Known files
 
 Files found in hashlookup which might require less investigation and analysis are listed below.
 
