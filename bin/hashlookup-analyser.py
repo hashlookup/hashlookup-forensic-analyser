@@ -138,10 +138,10 @@ def generate_report():
     markdown += (
         f'pie title File statistics by hashlookup-analyser of {total} files found\n'
     )
-    for stat in stats.keys():
-        if stat == "analysed":
+    for stati in stats.keys():
+        if stati == "analysed":
             continue
-        markdown += f'    \"{stat} ({stats[stat]})\" : {stats[stat]}\n'
+        markdown += f'    \"{stati} ({stats[stati]})\" : {stats[stati]}\n'
     markdown += "```\n\n"
     markdown += "# Detailed review\n"
     markdown += "Files analysed can be found below sorted by unknown and known files. The result is also available in a [JSON file](full.json).\n"
