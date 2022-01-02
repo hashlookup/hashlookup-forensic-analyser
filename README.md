@@ -2,7 +2,7 @@
 
 [![lint_python](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml/badge.svg)](https://github.com/hashlookup/hashlookup-forensic-analyser/actions/workflows/lint_python.yml)
 
-Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/) or the bloom filter from CIRCL hashlookup.
+Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/) or the [Bloom filter](https://github.com/hashlookup/hashlookup-forensic-analyser#bloom-filter) from CIRCL hashlookup.
 This tool can help a [digital forensic investigator](https://gist.github.com/adulau/e9e95fead4f32ac0fe725cb2a32fdb51) to know the context, origin of specific files during a digital forensic investigation.
 
 # Usage
@@ -34,7 +34,9 @@ If you want to analyse a specific directory (in this case, a Kernel module direc
 
 `python3 hashlookup-analyser.py  --bloomfilter=../hashlookup/hashlookup-full.bloom.1 --report -d /usr/lib/modules/5.11.0-41-generic/`
 
-When executed with `--report`, a [summary report](./doc/sample-report/summary.md) and a full [JSON](./doc/sample-report/full.json) file report are generated.
+When executed with `--report`, a [summary report](./doc/sample-report/summary.md) in Markdown and a full [JSON](./doc/sample-report/full.json) file report are generated.
+
+[A sample summary report is available](https://gist.github.com/adulau/f72af0a77b07aad8951441d882c0f6d0).
 
 ## Sample output
 
