@@ -15,7 +15,7 @@ import pytz
 import requests
 
 BUF_SIZE = 65536
-VERSION = "0.8"
+VERSION = "0.9"
 NAME = "hashlookup-forensic-analyser"
 # cache directory name needs to be known between execution of the script
 CACHE_DIR = "/tmp/hashlookup-forensic-analyser"  # nosec
@@ -161,6 +161,13 @@ def generate_report():
 
     s = dict(sorted(stat_filemagic.items(), key=lambda item: item[1], reverse=True))
     markdown += "\n## MIME types\n"
+    markdown += "```mermaid\n"
+    markdown += (
+        f'pie title MIME types distribution of the {total} files found\n'
+     )
+    for val in s.keys():
+        markdown += f'    \"{val} ({s[val]})\" : {s[val]}\n'
+    markdown += "```\n\n"
     markdown += "\n|MIME type|Occurences|\n"
     markdown += "|:--------|:---------|\n"
     for val in s.keys():
