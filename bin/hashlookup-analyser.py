@@ -159,6 +159,12 @@ def generate_report():
     for known in files['known_files']:
         markdown += f'|{known["FileName"]}|[{known["hash"]}](https://hashlookup.circl.lu/lookup/sha1/{known["hash"]})|\n'
 
+    s = dict(sorted(stat_filemagic.items(), key=lambda item: item[1], reverse=True))
+    markdown += "\n## MIME types\n"
+    markdown += "\n|MIME type|Occurences|\n"
+    markdown += "|:--------|:---------|\n"
+    for val in s.keys():
+        markdown += f'|{val}|{s[val]}|\n'
     f = open(os.path.join(dirname, "summary.md"), "w")
     f.write(markdown)
     f.close()
