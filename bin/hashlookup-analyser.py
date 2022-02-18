@@ -162,9 +162,7 @@ def generate_report():
     s = dict(sorted(stat_filemagic.items(), key=lambda item: item[1], reverse=True))
     markdown += "\n## MIME types\n"
     markdown += "```mermaid\n"
-    markdown += (
-        f'pie title MIME types distribution of the {total} files found\n'
-     )
+    markdown += f'pie title MIME types distribution of the {total} files found\n'
     for val in s.keys():
         markdown += f'    \"{val} ({s[val]})\" : {s[val]}\n'
     markdown += "```\n\n"
