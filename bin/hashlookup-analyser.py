@@ -179,7 +179,7 @@ files = {'known_files': [], 'unknown_files': []}  # type: ignore
 
 stats = {'found': 0, 'unknown': 0, 'excluded': 0, 'analysed': 0}
 
-stat_filemagic = {}
+stat_filemagic: dict = {}
 
 if args.progress:
     progress = 0
