@@ -2,9 +2,9 @@
 ![Hashlookup logo](https://avatars.githubusercontent.com/u/91272032?s=200&v=4)
 # Overall statistics
 
-Analysed directory /bin on maurer running Linux-5.13.0-28-generic-x86_64-with-glibc2.29 at 2022-02-18 08:43:14.799388+00:00.
+Analysed directory /bin on maurer running Linux-5.13.0-28-generic-x86_64-with-glibc2.29 at 2022-02-18 08:50:33.469586+00:00.
 
-Run with [hashlookup-forensic-analysed](https://github.com/hashlookup/hashlookup-forensic-analyser) version 0.8.
+Run with [hashlookup-forensic-analysed](https://github.com/hashlookup/hashlookup-forensic-analyser) version 0.9.
 
 |Hashlookup type|Numbers|
 |:-------------:|:-----:|
@@ -2772,6 +2772,20 @@ Files found in hashlookup which might require less investigation and analysis ar
 |/bin/system-config-printer|[491FA9410975011AB10F736714C7006DBA197E39](https://hashlookup.circl.lu/lookup/sha1/491FA9410975011AB10F736714C7006DBA197E39)|
 
 ## MIME types
+```mermaid
+pie title MIME types distribution of the 2730 files found
+    "application/x-sharedlib (1458)" : 1458
+    "inode/symlink (667)" : 667
+    "text/x-shellscript (285)" : 285
+    "text/x-perl (216)" : 216
+    "text/x-python (66)" : 66
+    "application/x-executable (16)" : 16
+    "text/x-ruby (14)" : 14
+    "text/plain (6)" : 6
+    "text/x-java (1)" : 1
+    "application/octet-stream (1)" : 1
+```
+
 
 |MIME type|Occurences|
 |:--------|:---------|
