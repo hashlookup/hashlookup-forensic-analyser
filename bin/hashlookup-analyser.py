@@ -10,6 +10,7 @@ import stat
 import sys
 from glob import glob
 
+import magic
 import pytz
 import requests
 
@@ -172,6 +173,8 @@ files = {'known_files': [], 'unknown_files': []}  # type: ignore
 
 stats = {'found': 0, 'unknown': 0, 'excluded': 0, 'analysed': 0}
 
+stat_filemagic = {}
+
 if args.progress:
     progress = 0
 
@@ -248,6 +251,12 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         notanalysed_files.append(f'{fn},{e}')
         stats['excluded'] += 1
         pass
+    with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+        mime_type = m.id_filename(fn)
+        if mime_type in stat_filemagic:
+            stat_filemagic[mime_type] += 1
+        else:
+            stat_filemagic[mime_type] = 1
 
     knowncachefile = f'{CACHE_DIR}/known/{h}'
     cachefile = f'{CACHE_DIR}/unknown/{h}'
