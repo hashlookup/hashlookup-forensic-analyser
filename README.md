@@ -36,7 +36,7 @@ If you want to analyse a specific directory (in this case, a Kernel module direc
 
 When executed with `--report`, a [summary report](./doc/sample-report/summary.md) in Markdown and a full [JSON](./doc/sample-report/full.json) file report are generated.
 
-[A sample summary report is available](https://gist.github.com/adulau/f72af0a77b07aad8951441d882c0f6d0).
+[A sample summary report is available](./doc/sample-report/summary.md).
 
 ## Sample output
 
