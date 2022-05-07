@@ -8,7 +8,8 @@ This tool can help a [digital forensic investigator](https://gist.github.com/adu
 # Usage
 
 ~~~~
-usage: hashlookup-analyser.py [-h] [-v] [--extended-debug] [--progress] [-d DIR] [--report] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache] [--bloomfilter BLOOMFILTER]
+usage: hashlookup-analyser.py [-h] [-v] [--extended-debug] [--progress] [--disable-progress] [-d DIR] [--report] [--live-linux] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache]
+                              [--bloomfilter BLOOMFILTER]
 
 Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service.
 
@@ -16,9 +17,11 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         Verbose output.
   --extended-debug      Debug file processed along with the mode and type.
-  --progress            Pring progress of the file lookup on stderr.
+  --progress            Print progress of the file lookup on stderr.
+  --disable-progress    Disable printing progress of the file lookup on stderr.
   -d DIR, --dir DIR     Directory to analyse.
   --report              Generate a report directory including a summary and all the results.
+  --live-linux          View known and unknown files from the live processes (using /proc)
   --print-all           Print all files result including known and unknown.
   --print-unknown       Print all files unknown to hashlookup service.
   --include-stats       Include statistics in the CSV export.
