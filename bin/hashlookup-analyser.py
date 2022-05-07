@@ -270,7 +270,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         stats['excluded'] += 1
         continue
 
-    sha1 = hashlib.sha1()
+    sha1 = hashlib.sha1(usedforsecurity=False)
     try:
         with open(fn, 'rb') as f:
             try:
