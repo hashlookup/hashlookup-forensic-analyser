@@ -59,7 +59,7 @@ parser.add_argument(
     "--live-linux",
     action="store_true",
     help="View known and unknown files from the live processes (using /proc)",
-    default=False
+    default=False,
 )
 parser.add_argument(
     "--print-all",
@@ -206,7 +206,9 @@ if args.progress:
 
 for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     if args.verbose:
-        sys.stderr.write( f'\rAnalysing {fn} - Found {stats["found"]} - Unknown {stats["unknown"]}\n')
+        sys.stderr.write(
+            f'\rAnalysing {fn} - Found {stats["found"]} - Unknown {stats["unknown"]}\n'
+        )
         sys.stderr.flush()
     if args.live_linux:
         plive = os.path.normpath(fn).lstrip('/').split('/')
@@ -340,18 +342,25 @@ if args.format == "csv":
                 fsize = os.path.getsize(file_object['FileName'])
                 filetype = key.split("_")
                 if not args.live_linux:
-                    print(f"{filetype[0]},\"{file_object['FileName']}\",{file_object['hash']},{fsize}")
+                    print(
+                        f"{filetype[0]},\"{file_object['FileName']}\",{file_object['hash']},{fsize}"
+                    )
                 else:
-                    print(f"{filetype[0]},\"{file_object['pid']}\",\"{file_object['FileName']}\",{file_object['hash']},{fsize}")
-
+                    print(
+                        f"{filetype[0]},\"{file_object['pid']}\",\"{file_object['FileName']}\",{file_object['hash']},{fsize}"
+                    )
 
     elif args.print_unknown:
         for file_object in files['unknown_files']:
             fsize = os.path.getsize(file_object['FileName'])
             if not args.live_linux:
-                print(f"unknown,\"{file_object['FileName']}\",\"{file_object['hash']}\",\"{fsize}\"")
+                print(
+                    f"unknown,\"{file_object['FileName']}\",\"{file_object['hash']}\",\"{fsize}\""
+                )
             else:
-                print(f"unknown,\"{file_object['pid']}\",\"{file_object['FileName']}\", \"{file_object['hash']}\",\"{fsize}\"")
+                print(
+                    f"unknown,\"{file_object['pid']}\",\"{file_object['FileName']}\", \"{file_object['hash']}\",\"{fsize}\""
+                )
 
     if args.include_stats:
         if args.bloomfilter is not None:
