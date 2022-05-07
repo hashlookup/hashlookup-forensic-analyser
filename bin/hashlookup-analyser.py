@@ -40,7 +40,13 @@ parser.add_argument(
     "--progress",
     action="store_true",
     default=True,
-    help="Pring progress of the file lookup on stderr.",
+    help="Print progress of the file lookup on stderr.",
+)
+parser.add_argument(
+    "--disable-progress",
+    action="store_true",
+    default=False,
+    help="Disable printing progress of the file lookup on stderr.",
 )
 parser.add_argument("-d", "--dir", help="Directory to analyse.")
 parser.add_argument(
@@ -223,7 +229,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
     mode = fn_info.st_mode
     if args.extended_debug:
         print(f'file={fn}, mode={mode}, finfo={fn_info}')
-    if args.progress:
+    if args.progress and not args.disable_progress:
         sys.stderr.write(next(spinner))
         sys.stderr.write(
             f'  - Files analysed={stats["analysed"]}, excluded={stats["excluded"]}, unknown={stats["unknown"]}, found={stats["found"]}\r'
