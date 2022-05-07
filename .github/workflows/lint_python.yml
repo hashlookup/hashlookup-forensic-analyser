@@ -20,6 +20,6 @@ jobs:
       - run: |
           pip install -r REQUIREMENTS
           mkdir --parents --verbose .mypy_cache
-      - run: mypy --allow-redefinition --ignore-missing-imports --install-types --non-interactive .
+          #      - run: mypy --allow-redefinition --ignore-missing-imports --install-types --non-interactive .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
       - run: safety check
