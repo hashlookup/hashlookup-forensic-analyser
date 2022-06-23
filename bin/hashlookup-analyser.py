@@ -82,20 +82,26 @@ parser.add_argument(
     default=False,
 )
 parser.add_argument(
-    "--bloomfilter",
-    help="Specify filename of a bloomfilter in DCSO bloomfilter format.",
+    "--bloomfilters",
+    nargs='+',
+    help="Space separated list of filenames of bloomfilters in DCSO bloomfilter format.",
     default=None,
 )
 args = parser.parse_args()
 
-if args.bloomfilter is not None:
+if args.bloomfilters is not None:
     from flor import BloomFilter
 
-    bf = BloomFilter()
-    with open(args.bloomfilter, 'rb') as f:
-        bf.read(f)
-    if b"6F1C170761C212EFD5004DF7FB36CEAF9FB053F7" in bf:
-        bloomfilter_source = "hashlookup-blomfilter"
+    bfs = []
+    for bffile in args.bloomfilters:
+        bf = BloomFilter()
+        with open(bffile, 'rb') as f:
+            bf.read(f)
+        if b"6F1C170761C212EFD5004DF7FB36CEAF9FB053F7" in bf:
+            bloomfilter_source = "hashlookup-bloomfilter_" + bffile
+        else:
+            bloomfilter_source = "bloomfilter-file_" + bffile
+        bfs.append({'bf': bf, 'bloomfilter_source': bloomfilter_source})
 
 if args.live_linux:
     args.dir = '/proc'
@@ -112,13 +118,14 @@ def lookup(value=None):
     if value is None:
         return False
 
-    if args.bloomfilter is not None:
-        if value.encode() in bf:
-            ret = {}
-            ret['SHA-1'] = value
-            return ret
-        else:
-            return False
+    if args.bloomfilters is not None:
+        for bf in bfs:
+            if value.encode() in bf['bf']:
+                ret = {}
+                ret['SHA-1'] = value
+                ret['source'] = bf['bloomfilter_source']
+                return ret
+        return False
 
     r = requests.get(
         f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers

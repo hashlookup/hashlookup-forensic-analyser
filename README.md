@@ -9,7 +9,7 @@ This tool can help a [digital forensic investigator](https://gist.github.com/adu
 
 ~~~~
 usage: hashlookup-analyser.py [-h] [-v] [--extended-debug] [--progress] [--disable-progress] [-d DIR] [--report] [--live-linux] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache]
-                              [--bloomfilter BLOOMFILTER]
+                              [--bloomfilters BLOOMFILTER [BLOOMFILTER ...]]
 
 Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service.
 
@@ -27,15 +27,15 @@ optional arguments:
   --include-stats       Include statistics in the CSV export.
   --format FORMAT       Output format (default is CSV).
   --cache               Enable local cache of known and unknown hashes in /tmp/hashlookup-forensic-analyser.
-  --bloomfilter BLOOMFILTER
-                        Specify filename of a bloomfilter in DCSO bloomfilter format.
+  --bloomfilters BLOOMFILTER [BLOOMFILTER ...]
+                        Space separated list of filenames of bloomfilters in DCSO bloomfilter format.
 ~~~~
 
 ## Sample report
 
 If you want to analyse a specific directory (in this case, a Kernel module directory), the following command be executed:
 
-`python3 hashlookup-analyser.py  --bloomfilter=../hashlookup/hashlookup-full.bloom.1 --report -d /usr/lib/modules/5.11.0-41-generic/`
+`python3 hashlookup-analyser.py  --bloomfilters ../hashlookup/hashlookup-full.bloom.1 --report -d /usr/lib/modules/5.11.0-41-generic/`
 
 When executed with `--report`, a [summary report](./doc/sample-report/summary.md) in Markdown and a full [JSON](./doc/sample-report/full.json) file report are generated.
 
@@ -93,10 +93,10 @@ stats,Analysed directory /usr/local/bin/ on kolmogorov running Linux-5.10.0-1045
 
 If you don't want to share your lookups online and do faster lookup, hashlookup provides a [bloom filter to download](https://cra.circl.lu/hashlookup/hashlookup-full.bloom).
 
-The file is around 700MB and can be stored locally in your home directory. `hashlookup-analyser` works in the same way, `--bloomfilter` option allows to specify the filename location of the bloom filter.
+The file is around 700MB and can be stored locally in your home directory. `hashlookup-analyser` works in the same way, `--bloomfilters` option allows to specify the filename location of the bloom filter (one or more).
 
 ~~~~
-python3 bin/hashlookup-analyser.py --bloomfilter /home/adulau/hashlookup/hashlookup-full.bloom --include-stats -d /bin
+python3 bin/hashlookup-analyser.py --bloomfilters /home/adulau/hashlookup/hashlookup-full.bloom --include-stats -d /bin
 ~~~~
 
 # License
