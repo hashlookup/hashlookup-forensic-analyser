@@ -98,9 +98,9 @@ if args.bloomfilters is not None:
         with open(bffile, 'rb') as f:
             bf.read(f)
         if b"6F1C170761C212EFD5004DF7FB36CEAF9FB053F7" in bf:
-            bloomfilter_source = "hashlookup-bloomfilter_"+bffile
+            bloomfilter_source = "hashlookup-bloomfilter_" + bffile
         else:
-            bloomfilter_source = "bloomfilter-file_"+bffile
+            bloomfilter_source = "bloomfilter-file_" + bffile
         bfs.append({'bf': bf, 'bloomfilter_source': bloomfilter_source})
 
 if args.live_linux:
