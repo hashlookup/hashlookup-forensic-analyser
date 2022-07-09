@@ -5,6 +5,8 @@
 Analyse a forensic target (such as a directory) to find and report files found and not found from [CIRCL hashlookup public service](https://circl.lu/services/hashlookup/) or the [Bloom filter](https://github.com/hashlookup/hashlookup-forensic-analyser#bloom-filter) from CIRCL hashlookup.
 This tool can help a [digital forensic investigator](https://gist.github.com/adulau/e9e95fead4f32ac0fe725cb2a32fdb51) to know the context, origin of specific files during a digital forensic investigation.
 
+The project is a component of the [hashlookup.io project](https://hashlookup.io/).
+
 # Usage
 
 ~~~~
