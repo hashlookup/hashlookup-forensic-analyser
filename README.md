@@ -106,7 +106,7 @@ python3 bin/hashlookup-analyser.py --bloomfilters /home/adulau/hashlookup/hashlo
 The software is an open source software released under the "Simplified BSD License".
 
 ```
-Copyright 2021-2022 Alexandre Dulaunoy
+Copyright 2021-2023 Alexandre Dulaunoy
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
