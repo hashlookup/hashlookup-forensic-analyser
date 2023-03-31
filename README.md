@@ -95,7 +95,7 @@ stats,Analysed directory /usr/local/bin/ on kolmogorov running Linux-5.10.0-1045
 
 If you don't want to share your lookups online and do faster lookup, hashlookup provides a [bloom filter to download](https://cra.circl.lu/hashlookup/hashlookup-full.bloom).
 
-The file is around 700MB and can be stored locally in your home directory. `hashlookup-analyser` works in the same way, `--bloomfilters` option allows to specify the filename location of the bloom filter (one or more).
+The file is around 1GB and can be stored locally in your home directory. `hashlookup-analyser` works in the same way, `--bloomfilters` option allows to specify the filename location of the bloom filter (one or more).
 
 ~~~~
 python3 bin/hashlookup-analyser.py --bloomfilters /home/adulau/hashlookup/hashlookup-full.bloom --include-stats -d /bin
