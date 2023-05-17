@@ -370,7 +370,7 @@ if args.format == "csv":
                 )
 
     if args.include_stats:
-        if args.bloomfilter is not None:
+        if args.bloomfilters is not None:
             bloomfilter_source = bloomfilter_source
         else:
             bloomfilter_source = "None - live request"
