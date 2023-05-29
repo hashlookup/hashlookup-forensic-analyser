@@ -128,7 +128,7 @@ def lookup(value=None):
         return False
 
     r = requests.get(
-        f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers
+        f'https://hashlookup.circl.lu/lookup/sha1/{value}', headers=headers, timeout=5
     )
     return r.json()
 
