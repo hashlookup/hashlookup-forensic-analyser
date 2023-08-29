@@ -120,7 +120,7 @@ def lookup(value=None):
 
     if args.bloomfilters is not None:
         for bf in bfs:
-            if value.encode() in bf['bf']:
+            if value.encode().lower() in bf['bf'] or value.encode().upper() in bf['bf']:
                 ret = {}
                 ret['SHA-1'] = value
                 ret['source'] = bf['bloomfilter_source']
