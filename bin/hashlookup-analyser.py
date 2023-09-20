@@ -84,8 +84,14 @@ parser.add_argument(
 parser.add_argument(
     "--bloomfilters",
     nargs='+',
-    help="Space separated list of filenames of bloomfilters in DCSO bloomfilter format.",
+    help="Space separated list of filenames of bloomfilters in DCSO bloomfilter format. Hashlookup default format is used which SHA-1 in hexadecimal representation in upper case.",
     default=None,
+)
+parser.add_argument(
+    "--bloomfilters-lower-case",
+    action="store_true",
+    help="If entries in the Bloom filter are expeceted to be lower case. Default is False.",
+    default=False,
 )
 args = parser.parse_args()
 
@@ -120,7 +126,11 @@ def lookup(value=None):
 
     if args.bloomfilters is not None:
         for bf in bfs:
-            if value.encode() in bf['bf']:
+            if args.bloomfilters_lower_case:
+                v = value.encode().lower()
+            else:
+                v = value.encode()
+            if v in bf['bf']:
                 ret = {}
                 ret['SHA-1'] = value
                 ret['source'] = bf['bloomfilter_source']
