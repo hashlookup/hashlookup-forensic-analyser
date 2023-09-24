@@ -89,7 +89,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--bloomfilter-algorithm",
-    help="Specify hash algorithm which was used in filter set/bloomfilter.",
+    help="Specify hash algorithm which was used in filter set/bloomfilter. Default is SHA1.",
     default="sha1",
 )
 parser.add_argument(
@@ -357,7 +357,9 @@ if args.format == "csv":
     if not args.live_linux:
         print('hashlookup_result,filename,{},size'.format(args.bloomfilter_algorithm))
     else:
-        print('hashlookup_result,pid,filename,{},size'.format(args.bloomfilter_algorithm))
+        print(
+            'hashlookup_result,pid,filename,{},size'.format(args.bloomfilter_algorithm)
+        )
     if args.print_all:
         for key in files.keys():
             for file_object in files[key]:
