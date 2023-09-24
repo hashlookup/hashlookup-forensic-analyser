@@ -357,7 +357,7 @@ if args.format == "csv":
     if not args.live_linux:
         print('hashlookup_result,filename,{},size'.format(args.bloomfilter_algorithm))
     else:
-        print('hashlookup_result,pid,filename,{},size'.args.bloomfilter_algorithm)
+        print('hashlookup_result,pid,filename,{},size'.format(args.bloomfilter_algorithm))
     if args.print_all:
         for key in files.keys():
             for file_object in files[key]:
