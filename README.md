@@ -11,7 +11,7 @@ The project is a component of the [hashlookup.io project](https://hashlookup.io/
 
 ~~~~
 usage: hashlookup-analyser.py [-h] [-v] [--extended-debug] [--progress] [--disable-progress] [-d DIR] [--report] [--live-linux] [--print-all] [--print-unknown] [--include-stats] [--format FORMAT] [--cache]
-                              [--bloomfilters BLOOMFILTERS [BLOOMFILTERS ...]] [--bloomfilters-lower-case]
+                              [--bloomfilters BLOOMFILTERS [BLOOMFILTERS ...]] [--bloomfilter-algorithm BLOOMFILTER_ALGORITHM] [--bloomfilters-lower-case]
 
 Analyse a forensic target to find and report files found and not found in hashlookup CIRCL public service.
 
@@ -31,6 +31,8 @@ optional arguments:
   --cache               Enable local cache of known and unknown hashes in /tmp/hashlookup-forensic-analyser.
   --bloomfilters BLOOMFILTERS [BLOOMFILTERS ...]
                         Space separated list of filenames of bloomfilters in DCSO bloomfilter format. Hashlookup default format is used which SHA-1 in hexadecimal representation in upper case.
+  --bloomfilter-algorithm BLOOMFILTER_ALGORITHM
+                        Specify hash algorithm which was used in filter set/bloomfilter. Default is SHA1.
   --bloomfilters-lower-case
                         If entries in the Bloom filter are expeceted to be lower case. Default is False.
 ~~~~
@@ -109,6 +111,7 @@ The software is an open source software released under the "Simplified BSD Licen
 
 ```
 Copyright 2021-2023 Alexandre Dulaunoy
+Copyright 2021-2023 All Contributors
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
