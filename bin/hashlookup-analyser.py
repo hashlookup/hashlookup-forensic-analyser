@@ -88,6 +88,11 @@ parser.add_argument(
     default=None,
 )
 parser.add_argument(
+    "--bloomfilter-algorithm",
+    help="Specify hash algorithm which was used in filter set/bloomfilter.",
+    default="sha1",
+)
+parser.add_argument(
     "--bloomfilters-lower-case",
     action="store_true",
     help="If entries in the Bloom filter are expeceted to be lower case. Default is False.",
@@ -132,7 +137,7 @@ def lookup(value=None):
                 v = value.encode()
             if v in bf['bf']:
                 ret = {}
-                ret['SHA-1'] = value
+                ret[args.bloomfilter_algorithm] = value
                 ret['source'] = bf['bloomfilter_source']
                 return ret
         return False
@@ -180,13 +185,13 @@ def generate_report():
     markdown += "Files analysed can be found below sorted by unknown and known files. The result is also available in a [JSON file](full.json).\n"
     markdown += "## Unknown files\n\n"
     markdown += "Files which might require further investigation and analysis are listed below.\n\n"
-    markdown += "|Filename|SHA-1 value|\n"
+    markdown += f'|Filename|{args.bloomfilter_algorithm} value|\n'
     markdown += "|:-------|:----------|\n"
     for unknown in files['unknown_files']:
         markdown += f'|{unknown["FileName"]}|{unknown["hash"]}|\n'
     markdown += "\n## Known files\n\n"
     markdown += "Files found in hashlookup which might require less investigation and analysis are listed below.\n\n"
-    markdown += "|Filename|SHA-1 value|\n"
+    markdown += f'|Filename|{args.bloomfilter_algorithm}|\n'
     markdown += "|:-------|:----------|\n"
     for known in files['known_files']:
         markdown += f'|{known["FileName"]}|[{known["hash"]}](https://hashlookup.circl.lu/lookup/sha1/{known["hash"]})|\n'
@@ -287,7 +292,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
         stats['excluded'] += 1
         continue
 
-    sha1 = hashlib.sha1()  # nosec
+    hash_func = hashlib.new(args.bloomfilter_algorithm)  # nosec
     try:
         with open(fn, 'rb') as f:
             try:
@@ -299,8 +304,8 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
                 data = f.read(BUF_SIZE)
                 if not data:
                     break
-                sha1.update(data)
-        h = sha1.hexdigest().upper()
+                hash_func.update(data)
+        h = hash_func.hexdigest().upper()
     except Exception as e:
         sys.stderr.write(f'Unable to read {e} file {fn}\n')
         notanalysed_files.append(f'{fn},{e}')
@@ -322,7 +327,7 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
             hresult = json.load(f)
     else:
         hresult = lookup(value=h)
-    if hresult is False or 'SHA-1' not in hresult:
+    if hresult is False or args.bloomfilter_algorithm not in hresult:
         stats['unknown'] += 1
         t = {}
         t['FileName'] = fn
@@ -350,9 +355,9 @@ for fn in [y for x in os.walk(args.dir) for y in glob(os.path.join(x[0], '*'))]:
 
 if args.format == "csv":
     if not args.live_linux:
-        print('hashlookup_result,filename,sha-1,size')
+        print('hashlookup_result,filename,{},size'.format(args.bloomfilter_algorithm))
     else:
-        print('hashlookup_result,pid,filename,sha-1,size')
+        print('hashlookup_result,pid,filename,{},size'.args.bloomfilter_algorithm)
     if args.print_all:
         for key in files.keys():
             for file_object in files[key]:
